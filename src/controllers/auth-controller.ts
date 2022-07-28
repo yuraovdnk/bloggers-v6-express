@@ -61,7 +61,7 @@ export class AuthController{
         const refreshToken = req.cookies.refreshToken
         const token = await this.authService.refreshToken(refreshToken)
         if(token){
-            res.cookie('refreshToken', token.refreshToken,{maxAge:60000,httpOnly:true,secure:false})
+            res.cookie('refreshToken', token.refreshToken,{maxAge:60000,httpOnly:true,secure:true})
             res.status(200).send({accessToken: token.accessToken})
             return
         }
