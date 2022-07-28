@@ -36,6 +36,7 @@ export class PostsService {
             shortDescription: body.shortDescription,
             content: body.content,
             bloggerId: blogger.id,
+            blogger: blogger.id,
         }
         const createdPost = await this.postsRepository.createPost(newPost)
         return this.postsMapper.commonMapperPost(createdPost)

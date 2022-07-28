@@ -1,4 +1,4 @@
-import {Model} from "mongoose";
+import {Model, PopulateOptions} from "mongoose";
 
 export type paginateType = {
     PageSize: string,
@@ -14,13 +14,19 @@ export type paginateRes<T=object> = {
     items: Array<T>
 }
 
-export async function pagination<T>(query: paginateType, filter: object, model: Model<any>, options?: object): Promise<paginateRes<T>> {
+export async function pagination<T>(query: paginateType, filter: object, model: Model<any>, options?: object,populate?:PopulateOptions): Promise<paginateRes<T>> {
 
     let pageSize = +query.PageSize || 10
     let pageNumber = +query.PageNumber || 1
     let skip = pageSize * (pageNumber - 1)
 
-    const items= await model.find(filter, {...options}).skip(skip).limit(pageSize).lean()
+    const queryDb = model.find(filter, {...options},).skip(skip).limit(pageSize).lean()
+
+    if(populate){
+        queryDb.populate(populate)
+    }
+    const items = await queryDb
+
     let totalCount = items.length
     return {
         pagesCount: Math.ceil(totalCount / pageSize),

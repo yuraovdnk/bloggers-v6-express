@@ -1,7 +1,6 @@
 import mongoose, {Schema} from "mongoose";
-import {PostInputType} from "../types/types";
 
-export const postSchema = new mongoose.Schema<PostInputType>({
+export const postSchema = new mongoose.Schema({
         title: {
             type: String,
             max: 30,
@@ -23,6 +22,10 @@ export const postSchema = new mongoose.Schema<PostInputType>({
             type: Schema.Types.ObjectId,
             required: true,
         },
+        blogger:{
+            type: Schema.Types.ObjectId,
+            ref: 'Blogger'
+        }
 
     },
     { versionKey: false }

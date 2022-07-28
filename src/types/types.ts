@@ -26,17 +26,26 @@ export type PostInputType = {
     shortDescription: string
     content: string
     bloggerId: mongoose.Types.ObjectId
+
 }
 export type PostSchemaType =
-    PostInputType &
     {
         _id: mongoose.Types.ObjectId
+        title: string
+        shortDescription: string
+        content: string
+        bloggerId: mongoose.Types.ObjectId
+        blogger: BloggerSchemaType
+
     }
 
 export type PostViewType =
-    PostInputType &
     {
         id: mongoose.Types.ObjectId
+        title: string
+        shortDescription: string
+        content: string
+        bloggerId: mongoose.Types.ObjectId
         bloggerName: string
     }
 
