@@ -19,15 +19,12 @@ export class PostsMapper{
 
     async commonMapperPost(post: PostSchemaType): Promise<PostViewType> | null {
         if(!post) return null
-        //const infoBlogger = await this.bloggerService.getBloggerById(post.bloggerId)
         console.log(post)
         return {
             id: post._id,
             title: post.title,
             shortDescription: post.shortDescription,
             content: post.content,
-            // bloggerId: infoBlogger?.id ?? post.bloggerId,
-            // bloggerName: infoBlogger?.name ?? "No name"
             bloggerId: post.blogger._id,
             bloggerName: post.blogger.name
         }
