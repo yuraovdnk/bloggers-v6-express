@@ -1,16 +1,17 @@
 import {CommentsRepository} from "../repositories/comments-repository";
 import {inject, injectable} from "inversify";
 import mongoose from "mongoose";
-import {CommentDto} from "../utils/dtos/comment-dto";
+import {CommentsMapper} from "../utils/dtos/comments-mapper";
 import {CommentViewType} from "../types/types";
 
 @injectable()
 export class CommentsService{
-    constructor(@inject(CommentsRepository) public commentsRepository:CommentsRepository) {}
+    constructor(@inject(CommentsRepository) public commentsRepository:CommentsRepository,
+                @inject(CommentsMapper) protected commentsMapper: CommentsMapper) {}
 
     async getCommentById(id:mongoose.Types.ObjectId):Promise<CommentViewType | null>{
         const comment = await this.commentsRepository.getCommentById(id)
-        return CommentDto.commentMapper(comment)
+        return this.commentsMapper.commonMapperComments(comment)
     }
 
     async updateComment(id: mongoose.Types.ObjectId,content:string):Promise<boolean> {

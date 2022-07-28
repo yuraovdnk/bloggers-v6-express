@@ -1,6 +1,5 @@
 import {UserSchemaType, UserType} from "../types/types";
 import {paginateType, pagination, paginateRes} from "./pagination";
-import {ObjectId} from "mongodb";
 import {User} from "../models/user-model";
 import {injectable} from "inversify";
 import mongoose from "mongoose";
@@ -13,7 +12,7 @@ export class UsersRepository {
         return await User.create(newUser)
     }
 
-    async getAllUsers(query: paginateType):Promise<paginateRes>{
+    async getAllUsers(query: paginateType):Promise<paginateRes<UserSchemaType>>{
         const filter = {}
         return await pagination(query, filter, User)
     }

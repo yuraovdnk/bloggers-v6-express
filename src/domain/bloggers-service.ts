@@ -3,22 +3,23 @@ import {paginateRes, paginateType} from "../repositories/pagination";
 import {inject, injectable} from "inversify";
 import mongoose from "mongoose";
 import {BloggerInputType, BloggerViewType} from "../types/types";
-import {BloggerDto} from "../utils/dtos/blogger-dto";
+import {BloggersMapper} from "../utils/dtos/bloggers-mapper";
 
 @injectable()
 export class BloggersService {
-    constructor(@inject(BloggersRepository) protected bloggersRepository: BloggersRepository) {
+    constructor(@inject(BloggersRepository) protected bloggersRepository: BloggersRepository,
+                @inject(BloggersMapper) protected bloggersMapper: BloggersMapper) {
     }
 
     async getBloggers(query: paginateType): Promise<paginateRes<BloggerViewType>> {
         const bloggers = await this.bloggersRepository.getBloggers(query)
-        return await BloggerDto.bloggersMapperPagination(bloggers)
+        return this.bloggersMapper.bloggersMapperPagination(bloggers)
 
     }
 
     async getBloggerById(id: mongoose.Types.ObjectId): Promise<BloggerViewType> | null {
         const blogger = await this.bloggersRepository.getBloggerById(id)
-        return BloggerDto.bloggersMapper(blogger)
+        return this.bloggersMapper.commonBloggersMapper(blogger)
 
     }
 
@@ -28,7 +29,7 @@ export class BloggersService {
             youtubeUrl: body.youtubeUrl
         }
         const createdBlogger = await this.bloggersRepository.createBlogger(newBlogger)
-        return BloggerDto.bloggersMapper(createdBlogger)
+        return this.bloggersMapper.commonBloggersMapper(createdBlogger)
 
     }
 

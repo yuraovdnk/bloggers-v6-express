@@ -15,6 +15,10 @@ import {UsersRepository} from "../repositories/users-repository";
 import {JWTService} from "../domain/application/jwt-service";
 import {UsersService} from "../domain/users-service";
 import {UserController} from "../controllers/users-controller";
+import {PostsMapper} from "./dtos/posts-mapper";
+import {CommentsMapper} from "./dtos/comments-mapper";
+import {BloggersMapper} from "./dtos/bloggers-mapper";
+import {UsersMapper} from "./dtos/users-mapper";
 
 
 
@@ -31,15 +35,20 @@ ioc.bind(PostsRepository).to(PostsRepository)
 ioc.bind(CommentsController).to(CommentsController)
 ioc.bind(CommentsService).to(CommentsService)
 ioc.bind(CommentsRepository).to(CommentsRepository)
-
+//auth
 ioc.bind(AuthController).to(AuthController)
 ioc.bind(AuthService).to(AuthService)
-
+//users
 ioc.bind(UserController).to(UserController)
 ioc.bind(UsersService).to(UsersService)
 ioc.bind(UsersRepository).to(UsersRepository)
 
 ioc.bind(JWTService).to(JWTService)
+//mappers
+ioc.bind(PostsMapper).to(PostsMapper)
+ioc.bind(CommentsMapper).to(CommentsMapper)
+ioc.bind(BloggersMapper).to(BloggersMapper)
+ioc.bind(UsersMapper).to(UsersMapper)
 
 
 

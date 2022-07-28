@@ -1,14 +1,13 @@
-import {BloggerSchemaType, BloggerViewType, PostSchemaType, PostViewType} from "../../types/types";
+import {PostSchemaType, PostViewType} from "../../types/types";
 import {BloggersService} from "../../domain/bloggers-service";
 import {paginateRes} from "../../repositories/pagination";
-import {ioc} from "../composition-root";
 import {inject, injectable} from "inversify";
 
 @injectable()
 export class PostsMapper{
 
-    constructor(@inject(BloggersService) public bloggerService:BloggersService) {
-    }
+    constructor(@inject(BloggersService) public bloggerService:BloggersService) {}
+
     async mapperPostPagination(object:paginateRes<PostSchemaType>):Promise<paginateRes<PostViewType>>{
         const items =  await Promise.all(object.items.map((p=> this.commonMapperPost(p))))
         return {

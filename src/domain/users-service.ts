@@ -6,18 +6,17 @@ import mongoose from "mongoose";
 import {uuid} from "uuidv4";
 import {add} from "date-fns";
 import bcrypt from "bcrypt";
-import {Mappers} from "../utils/dto";
-import {UserDto} from "../utils/dtos/user-dto";
+import {UsersMapper} from "../utils/dtos/users-mapper";
 
 @injectable()
 export class UsersService {
-    constructor(@inject(UsersRepository) public usersRepository: UsersRepository) {
+    constructor(@inject(UsersRepository) public usersRepository: UsersRepository,
+                @inject(UsersMapper) protected usersMapper : UsersMapper) {
     }
 
-    async getAllUsers(query: paginateType): Promise<paginateRes> {
+    async getAllUsers(query: paginateType): Promise<paginateRes<UserViewType>> {
         const users = await this.usersRepository.getAllUsers(query)
-        users.items = UserDto.usersMapperPagination(users.items as [UserSchemaType])
-        return users
+        return this.usersMapper.usersMapperPagination(users)
 
     }
 
@@ -47,7 +46,7 @@ export class UsersService {
             }
         }
         const createdUser = await this.usersRepository.createUser(newUser)
-        return Mappers.usersMapper(createdUser)
+        return this.usersMapper.commonUsersMapper(createdUser)
     }
 
     async generateHash(password: string) {

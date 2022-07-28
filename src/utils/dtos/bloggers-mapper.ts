@@ -1,16 +1,18 @@
 import {BloggerSchemaType, BloggerViewType} from "../../types/types";
 import {paginateRes} from "../../repositories/pagination";
+import {injectable} from "inversify";
 
-export class BloggerDto{
-    static async bloggersMapperPagination(object:paginateRes<BloggerSchemaType>):Promise<paginateRes<BloggerViewType>>{
-        const items =  await Promise.all(object.items.map((b=> this.bloggersMapper(b))))
+@injectable()
+export class BloggersMapper {
+    async bloggersMapperPagination(object:paginateRes<BloggerSchemaType>):Promise<paginateRes<BloggerViewType>>{
+        const items =  await Promise.all(object.items.map((b=> this.commonBloggersMapper(b))))
         return {
             ...object,
             items
         }
     }
 
-    static bloggersMapper(blogger:BloggerSchemaType):BloggerViewType | null{
+    commonBloggersMapper(blogger:BloggerSchemaType):BloggerViewType | null{
         if(!blogger) return null
         return {
             id:blogger._id,

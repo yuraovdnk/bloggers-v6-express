@@ -1,17 +1,19 @@
-import {BloggerSchemaType, BloggerViewType, CommentSchemaType, CommentViewType} from "../../types/types";
+import {CommentSchemaType, CommentViewType} from "../../types/types";
 import {paginateRes} from "../../repositories/pagination";
+import {injectable} from "inversify";
 
-export class CommentDto{
+@injectable()
+export class CommentsMapper {
 
-    static async commentsMapperPagination(object:paginateRes<CommentSchemaType>):Promise<paginateRes<CommentViewType>>{
-        const items =  await Promise.all(object.items.map((b=> this.commentMapper(b))))
+    async mapperCommentsPagination(object:paginateRes<CommentSchemaType>):Promise<paginateRes<CommentViewType>>{
+        const items =  await Promise.all(object.items.map((b=> this.commonMapperComments(b))))
         return {
             ...object,
             items
         }
     }
 
-    static commentMapper(comment: CommentSchemaType):CommentViewType{
+    commonMapperComments(comment: CommentSchemaType):CommentViewType{
         if(!comment) return null
         return {
             id:comment._id,

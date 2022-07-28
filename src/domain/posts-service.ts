@@ -8,24 +8,26 @@ import {
 import {inject, injectable} from "inversify";
 import mongoose from "mongoose";
 import {BloggersService} from "./bloggers-service";
-import {CommentDto} from "../utils/dtos/comment-dto";
-import {PostDto} from "../utils/dtos/post-dto";
+import {CommentsMapper} from "../utils/dtos/comments-mapper";
+import {PostsMapper} from "../utils/dtos/posts-mapper";
 
 
 @injectable()
 export class PostsService {
     constructor(@inject(PostsRepository) protected postsRepository: PostsRepository,
-                @inject(BloggersService) protected bloggersService: BloggersService) {
+                @inject(BloggersService) protected bloggersService: BloggersService,
+                @inject(PostsMapper) protected postsMapper : PostsMapper,
+                @inject(CommentsMapper) protected commentsMapper : CommentsMapper){
     }
 
     async getPosts(query: paginateType): Promise<paginateRes<PostViewType>> {
         const posts = await this.postsRepository.getPosts(query)
-        return await PostDto.postsMapperPagination(posts)
+        return this.postsMapper.mapperPostPagination(posts)
     }
 
     async getPostById(id: mongoose.Types.ObjectId): Promise<PostViewType | null> {
         const post = await this.postsRepository.getPostById(id)
-        return PostDto.postMapper(post)
+        return this.postsMapper.commonMapperPost(post)
     }
 
     async createPost(body: PostInputType, blogger: BloggerViewType): Promise<PostViewType> {
@@ -36,7 +38,7 @@ export class PostsService {
             bloggerId: blogger.id,
         }
         const createdPost = await this.postsRepository.createPost(newPost)
-        return PostDto.postMapper(createdPost)
+        return this.postsMapper.commonMapperPost(createdPost)
     }
 
     async updatePost(body: PostInputType, id: mongoose.Types.ObjectId): Promise<boolean> {
@@ -49,7 +51,7 @@ export class PostsService {
 
     async getPostsByBloggerId(bloggerId: mongoose.Types.ObjectId, query: paginateType): Promise<paginateRes> {
         const bloggerPosts = await this.postsRepository.getPostsByBloggerId(bloggerId, query)
-        return await PostDto.postsMapperPagination(bloggerPosts)
+        return this.postsMapper.mapperPostPagination(bloggerPosts)
     }
 
 ///comment
@@ -62,11 +64,11 @@ export class PostsService {
             addedAt: new Date()
         }
         const comment = await this.postsRepository.createComment(newComment)
-        return CommentDto.commentMapper(comment)
+        return this.commentsMapper.commonMapperComments(comment)
     }
 
     async getCommentsByPostId(postId: mongoose.Types.ObjectId, query: paginateType): Promise<paginateRes> {
         const comments = await this.postsRepository.getCommentsByPostId(postId, query)
-        return await CommentDto.commentsMapperPagination(comments)
+        return this.commentsMapper.mapperCommentsPagination(comments)
     }
 }
