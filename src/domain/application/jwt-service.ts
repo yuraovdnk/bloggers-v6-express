@@ -1,4 +1,4 @@
-import {TokenType, UserSchemaType, UserType} from "../../types/types";
+import {UserSchemaType} from "../../types/types";
 import jwt from 'jsonwebtoken'
 import {settings} from "../../settings";
 import {Token} from "../../models/token-model";
@@ -10,8 +10,8 @@ export class JWTService {
 
     async createJWT(user: UserSchemaType) {
         console.log(user)
-        const accessToken = jwt.sign({userId: user._id}, settings.JWT_SECRET, {expiresIn: '30s'})
-        const refreshToken = jwt.sign({userId: user._id}, settings.JWT_SECRET, {expiresIn: '1h'})
+        const accessToken = jwt.sign({userId: user._id}, settings.JWT_SECRET, {expiresIn: '10s'})
+        const refreshToken = jwt.sign({userId: user._id}, settings.JWT_SECRET, {expiresIn: '20s'})
         return {
             accessToken,
             refreshToken
