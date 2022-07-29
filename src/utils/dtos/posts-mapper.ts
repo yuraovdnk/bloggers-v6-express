@@ -19,7 +19,6 @@ export class PostsMapper{
 
     async commonMapperPost(post: PostSchemaType): Promise<PostViewType> | null {
         if(!post) return null
-        console.log(post)
         return {
             id: post._id,
             title: post.title,
