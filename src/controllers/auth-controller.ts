@@ -50,7 +50,7 @@ export class AuthController{
         if (user) {
             const token = await this.jwtService.createJWT(user)
             await this.jwtService.saveToken(user._id,token.refreshToken)
-            res.cookie('refreshToken', token.refreshToken,{maxAge:10000,httpOnly:true,secure:false})
+            res.cookie('refreshToken', token.refreshToken,{maxAge:10000,httpOnly:true,secure:true})
             res.status(200).send({accessToken: token.accessToken})
             return
         }
