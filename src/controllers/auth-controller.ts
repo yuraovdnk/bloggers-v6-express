@@ -73,7 +73,7 @@ export class AuthController{
         const deleteToken = await this.authService.revokedToken(refreshToken)
         if(deleteToken){
             res.cookie('refreshToken',{maxAge:0})
-            return res.sendStatus(200)
+            return res.sendStatus(204)
         }
         res.sendStatus(401)
     }
