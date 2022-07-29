@@ -92,8 +92,8 @@ export class AuthService {
     }
 
     async generateHash(password: string) {
-        const hash = await bcrypt.hash(password, 10)
-        return hash
+        return await bcrypt.hash(password, 10)
+
     }
 
     async finUserByCode(code:string):Promise<UserSchemaType | null>{
@@ -106,8 +106,8 @@ export class AuthService {
         }
         const UserIdByToken = await this.jwtService.verifyToken(refreshToken)
         const findToken = await this.jwtService.findToken(refreshToken)
-        if(!UserIdByToken) return false
-        if(!findToken) return false
+        if(!UserIdByToken) return null
+        if(!findToken) return null
         const user = await this.usersRepository.findById(UserIdByToken)
         const newToken = await this.jwtService.createJWT(user)
         await this.jwtService.saveToken(user._id,newToken.refreshToken)

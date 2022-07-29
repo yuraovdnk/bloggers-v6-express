@@ -65,8 +65,7 @@ export class AuthController{
             res.status(200).send({accessToken: token.accessToken})
             return
         }
-        res.sendStatus(400)
-
+        res.sendStatus(401)
     }
 
     async logout (req: Request, res: Response){
