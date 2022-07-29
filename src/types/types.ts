@@ -1,4 +1,4 @@
-import mongoose, {ObjectId} from "mongoose";
+import mongoose from "mongoose";
 ///Reuse types
 
 
@@ -9,15 +9,18 @@ export type BloggerInputType = {
     youtubeUrl: string
 }
 export type BloggerSchemaType =
-    BloggerInputType &
     {
         _id: mongoose.Types.ObjectId
+        name: string
+        youtubeUrl: string
+
     }
 
 export type BloggerViewType =
-    BloggerInputType &
     {
         id: mongoose.Types.ObjectId
+        name: string
+        youtubeUrl: string
     }
 ////////////Post Types
 
@@ -36,7 +39,6 @@ export type PostSchemaType =
         content: string
         bloggerId: mongoose.Types.ObjectId
         blogger: BloggerSchemaType
-
     }
 
 export type PostViewType =
@@ -57,9 +59,10 @@ export type UserType = {
     emailConfirmation: EmailConfirmationType
 }
 export type UserSchemaType =
-    UserType &
     {
         _id: mongoose.Types.ObjectId,
+        accountData: AccountDataType,
+        emailConfirmation: EmailConfirmationType
     }
 
 export type UserViewType = {
@@ -90,9 +93,13 @@ export type CommentInputType = {
 }
 
 export type CommentSchemaType =
-    CommentInputType &
     {
         _id: mongoose.Types.ObjectId,
+        content: string,
+        userId: mongoose.Types.ObjectId,
+        postId: mongoose.Types.ObjectId,
+        userLogin: string,
+        addedAt: Date
     }
 export type CommentViewType =
     {
