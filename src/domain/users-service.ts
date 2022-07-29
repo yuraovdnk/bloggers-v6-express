@@ -42,7 +42,7 @@ export class UsersService {
                 expirationDate: add(new Date(), {
                     hours: 1
                 }),
-                isConfirmed: false
+                isConfirmed: true
             }
         }
         const createdUser = await this.usersRepository.createUser(newUser)
